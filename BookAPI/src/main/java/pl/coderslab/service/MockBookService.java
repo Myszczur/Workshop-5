@@ -5,11 +5,12 @@ import pl.coderslab.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MockBookService implements BookService {
     private List<Book> books;
-    private static Long nextId = 3L;
+    private static Long nextId = 4L;
 
     public MockBookService() {
         books = new ArrayList<>();
@@ -27,18 +28,30 @@ public class MockBookService implements BookService {
     }
 
     @Override
-    public List<Book> getBookById(Long id) {
-        List<Book> bookId = new ArrayList<>();
-        return bookId = books.stream()
+    public Optional<Book> getBookById(Long id) {
+        return  books.stream()
                 .filter(it -> id.equals(it.getId()))
-                .toList();
+                .findFirst();
     }
 
     @Override
     public void addBook(Book book) {
-        book.setId(++nextId);
+        book.setId(nextId++);
         books.add(book);
     }
 
+    @Override
+    public void delBook(Long id) {
+        if(getBookById(id).isPresent()){
+            books.remove(this.getBookById(id).get());
+        }
 
+    }
+
+    @Override
+    public void editBook(Book book) {
+        if (this.getBookById(book.getId()).isPresent()) {
+            books.set(books.indexOf(this.getBookById(book.getId()).get()), book);
+        }
+    }
 }
