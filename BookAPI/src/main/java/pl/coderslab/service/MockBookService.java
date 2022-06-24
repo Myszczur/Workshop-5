@@ -5,9 +5,13 @@ import pl.coderslab.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Component
 public class MockBookService implements BookService {
     private List<Book> books;
+    private static Long nextId = 4L;
+
     public MockBookService() {
         books = new ArrayList<>();
         books.add(new Book(1L, "9788324631766", "Thiniking	in	Java", "Bruce	Eckel", "Helion", "programming"));
@@ -17,21 +21,35 @@ public class MockBookService implements BookService {
                 "programming"));
     }
 
-
     @Override
     public List<Book> getBooks() {
         return books;
     }
 
     @Override
-    public List<Book> getBookById(Long id) {
-        List<Book> bookId = new ArrayList<>();
-        return  bookId = books.stream()
+    public Optional<Book> getBookById(Long id) {
+        return books.stream()
                 .filter(it -> id.equals(it.getId()))
-                .toList();
-        }
+                .findFirst();
+    }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    @Override
+    public void addBook(Book book) {
+        book.setId(nextId++);
+        books.add(book);
+    }
+
+    @Override
+    public void delBook(Long id) {
+        if (getBookById(id).isPresent()) {
+            books.remove(this.getBookById(id).get());
+        }
+    }
+
+    @Override
+    public void editBook(Book book) {
+        if (this.getBookById(book.getId()).isPresent()) {
+            books.set(books.indexOf(this.getBookById(book.getId()).get()), book);
+        }
     }
 }
