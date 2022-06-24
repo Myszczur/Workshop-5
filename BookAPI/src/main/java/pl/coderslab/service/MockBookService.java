@@ -5,9 +5,12 @@ import pl.coderslab.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 public class MockBookService implements BookService {
     private List<Book> books;
+    private static Long nextId = 3L;
+
     public MockBookService() {
         books = new ArrayList<>();
         books.add(new Book(1L, "9788324631766", "Thiniking	in	Java", "Bruce	Eckel", "Helion", "programming"));
@@ -26,12 +29,16 @@ public class MockBookService implements BookService {
     @Override
     public List<Book> getBookById(Long id) {
         List<Book> bookId = new ArrayList<>();
-        return  bookId = books.stream()
+        return bookId = books.stream()
                 .filter(it -> id.equals(it.getId()))
                 .toList();
-        }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
     }
+
+    @Override
+    public void addBook(Book book) {
+        book.setId(++nextId);
+        books.add(book);
+    }
+
+
 }

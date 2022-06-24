@@ -32,4 +32,9 @@ public class BookController {
     public List<Book> getBooksById(@PathVariable Long id) {
         return bookService.getBookById(id);
     }
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseBody
+    public void addBook(@RequestBody Book book) {
+         bookService.addBook(book);
+    }
 }
