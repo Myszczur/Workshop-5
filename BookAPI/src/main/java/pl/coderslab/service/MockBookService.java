@@ -26,6 +26,10 @@ public class MockBookService implements BookService {
         return books;
     }
 
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
     @Override
     public Optional<Book> getBookById(Long id) {
         return books.stream()
