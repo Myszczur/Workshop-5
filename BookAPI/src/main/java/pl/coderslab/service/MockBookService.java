@@ -21,7 +21,6 @@ public class MockBookService implements BookService {
                 "programming"));
     }
 
-
     @Override
     public List<Book> getBooks() {
         return books;
@@ -29,7 +28,7 @@ public class MockBookService implements BookService {
 
     @Override
     public Optional<Book> getBookById(Long id) {
-        return  books.stream()
+        return books.stream()
                 .filter(it -> id.equals(it.getId()))
                 .findFirst();
     }
@@ -42,10 +41,9 @@ public class MockBookService implements BookService {
 
     @Override
     public void delBook(Long id) {
-        if(getBookById(id).isPresent()){
+        if (getBookById(id).isPresent()) {
             books.remove(this.getBookById(id).get());
         }
-
     }
 
     @Override
